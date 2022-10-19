@@ -6,6 +6,7 @@ export default class Adventurer {
     verticalPos: number;
     orientation: string;
     movements: string;
+    treasures: number;
 
     constructor(name: string, hori: number, vert: number, orientation: string, movements: string) {
         this.name = name;
@@ -15,5 +16,6 @@ export default class Adventurer {
         this.verticalPos = vert;
         this.orientation = orientation;
         this.movements = movements;
+        this.treasures = 0;
     }
 }
