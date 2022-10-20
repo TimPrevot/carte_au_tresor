@@ -2,13 +2,8 @@ import * as fs from "fs";
 import Mountain from "./mountain"
 import TreasureSpot from "./treasure_spot";
 import Adventurer from "./adventurer";
-
-// Stocke le chemin vers le fichier d'entrée
-const fileName: string = "entry_files/testfile1.txt";
-// On lit le fichier et stocke son contenu dans une String
-let fileContent = fs.readFileSync(fileName, 'utf-8');
-// On splitte la String pour séparer les différentes lignes
-const splitFile: string[] = fileContent.split("\r\n");
+import {readAdventurer, readEntryFile, readMountain, readTreasureSpot} from "./functions";
+import {log} from "util";
 
 // Variables pour stocker les dimensions de la carte
 let verticalLength = 0;
@@ -25,6 +20,7 @@ const mountains: Mountain[] = [];
 const treasureSpots: TreasureSpot[] = [];
 const adventurers: Adventurer[] = [];
 
+let splitFile = readEntryFile();
 // On lit le fichier d'entrée ligne par ligne
 for (let i = 0; i < splitFile.length; i++) {
     switch (splitFile[i][0]){
@@ -35,34 +31,23 @@ for (let i = 0; i < splitFile.length; i++) {
             break;
         // Pour chaque montagne, on crée une instance de Montagne que l'on stocke dans le tableau correspondant
         case 'M':
-            if (0 <= parseInt(splitFile[i][2]) && parseInt(splitFile[i][2]) <= horizontalLength && 0 <= parseInt(splitFile[i][4]) && parseInt(splitFile[i][4]) <= verticalLength) {
-                mountains.push(new Mountain(parseInt(splitFile[i][2]), parseInt(splitFile[i][4])));
-            } else {
-                console.log("La montagne en (", splitFile[i][2], ",", splitFile[i][4], ") est hors limites !");
-            }
+            let mountain = readMountain(splitFile[i], horizontalLength, verticalLength);
+            mountain ? mountains.push(mountain) : console.log("La montagne en (", splitFile[i][2], ",", splitFile[i][4], ") est hors limites !");
             break;
 
         // Pour chaque trésor, on crée une instance de TreasureSpot que l'on stocke dans le tableau correspondant
         case 'T':
-            if (0 <= parseInt(splitFile[i][2]) && parseInt(splitFile[i][2]) <= horizontalLength && 0 <= parseInt(splitFile[i][4]) && parseInt(splitFile[i][4]) <= verticalLength) {
-                treasureSpots.push(new TreasureSpot(parseInt(splitFile[i][2]), parseInt(splitFile[i][4]), parseInt(splitFile[i][6])));
-            } else {
-                console.log("Le trésor en (", splitFile[i][2], ",", splitFile[i][4], ") est hors limites !");
-            }
+            let treasureSpot = readTreasureSpot(splitFile[i], horizontalLength, verticalLength);
+            treasureSpot ? treasureSpots.push(treasureSpot) : parseInt(splitFile[i][6]) <= 0 ? console.log("Le spot ne contient pas de trésor !") : console.log("Le trésor en (", splitFile[i][2], ",", splitFile[i][4], ") est hors limites !");
             break;
 
         // Pour chaque aventurier, on crée une instance de Adventurer que l'on stocke dans le tableau correspondant
         case 'A':
             const adventurerParams: string[] = splitFile[i].split("-");
-            if (0 <= parseInt(adventurerParams[2]) && parseInt(adventurerParams[2]) <= horizontalLength && 0 <= parseInt(adventurerParams[3]) && parseInt(adventurerParams[3]) <= verticalLength) {
-                adventurers.push(new Adventurer(adventurerParams[1], parseInt(adventurerParams[2]), parseInt(adventurerParams[3]),
-                    adventurerParams[4], adventurerParams[5]));
-                // On stocke aussi les maxMoves
-                if (adventurerParams[5].length > maxMoves)
-                    maxMoves = adventurerParams[5].length;
-            } else {
-                console.log("L'aventurier ", adventurerParams[1], " en (", adventurerParams[2], ",", adventurerParams[3], ") est hors limites !");
-            }
+            let adventurer = readAdventurer(adventurerParams, horizontalLength, verticalLength);
+            adventurer ? adventurers.push(adventurer) : console.log("L'aventurier ", adventurerParams[1], " en (", adventurerParams[2], ",", adventurerParams[3], ") est hors limites !");
+            if (adventurerParams[5].length > maxMoves && adventurer)
+                maxMoves = adventurerParams[5].length;
             break;
         default:
             break;
