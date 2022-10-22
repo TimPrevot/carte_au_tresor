@@ -4,15 +4,14 @@ import TreasureSpot from "./treasure_spot";
 import Adventurer from "./adventurer";
 
 export function readEntryFile(): string[] {
-    // Stocke le chemin vers le fichier d'entrée
-    const fileName: string = "entry_files/testfile1.txt";
     // On lit le fichier et stocke son contenu dans une String
-    let fileContent = fs.readFileSync(fileName, 'utf-8');
+    let fileContent = fs.readFileSync('./entryFile.txt', 'utf-8');
     // On splitte la String pour séparer les différentes lignes
     const splitFile: string[] = fileContent.split("\r\n");
     return splitFile;
 }
 
+// Crée et renvoie une nouvelle instance de Mountain à partir des informations du fichier d'entrée
 export function readMountain(entryString: string, horizontalLength: number, verticalLength: number): Mountain | null {
     let mountain = null;
     if (0 <= parseInt(entryString[2]) && parseInt(entryString[2]) <= horizontalLength && 0 <= parseInt(entryString[4]) && parseInt(entryString[4]) <= verticalLength) {
@@ -21,6 +20,7 @@ export function readMountain(entryString: string, horizontalLength: number, vert
     return mountain;
 }
 
+// Crée et renvoie une nouvelle instance de TreasureSpot à partir des informations du fichier d'entrée
 export function readTreasureSpot(entryString: string, horizontalLength: number, verticalLength: number): TreasureSpot | null {
     let treasureSpot = null;
     if (0 <= parseInt(entryString[2]) && parseInt(entryString[2]) <= horizontalLength && 0 <= parseInt(entryString[4]) && parseInt(entryString[4]) <= verticalLength && parseInt(entryString[6]) > 0) {
@@ -45,6 +45,7 @@ export function verifyMoves(moves: string): boolean {
     return true;
 }
 
+// Crée et renvoie une nouvelle instance de Adventurer à partir des informations du fichier d'entrée
 export function readAdventurer(adventurerParams: string[], horizontalLength: number, verticalLength: number): Adventurer | null {
     let adventurer = null;
     if (0 <= parseInt(adventurerParams[2]) && parseInt(adventurerParams[2]) <= horizontalLength && 0 <= parseInt(adventurerParams[3])

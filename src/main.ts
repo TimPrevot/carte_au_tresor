@@ -3,7 +3,6 @@ import Mountain from "./mountain"
 import TreasureSpot from "./treasure_spot";
 import Adventurer from "./adventurer";
 import {readAdventurer, readEntryFile, readMountain, readTreasureSpot} from "./functions";
-import {log} from "util";
 
 // Variables pour stocker les dimensions de la carte
 let verticalLength = 0;
@@ -211,13 +210,14 @@ while (maxMoves > 0) {
 
 // On utilise writeFileSync() en premier pour effacer le précédent contenu du fichier de sortie
 // Puis on utilise appendFileSync() pour simplement ajouter une ligne au fichier
-fs.writeFileSync('exitFiles/finaltest1.txt', splitFile[0] + '\n');
+// Si le fichier de sortie n'existe pas, il sera créé automatiquement
+fs.writeFileSync('exitFile.txt', splitFile[0] + '\n');
 mountains.forEach((mountain) => {
-    fs.appendFileSync('exitFiles/finaltest1.txt', 'M-' + mountain.horizontalPos + '-' + mountain.verticalPos + '\n');
+    fs.appendFileSync('exitFile.txt', 'M-' + mountain.horizontalPos + '-' + mountain.verticalPos + '\n');
 });
 treasureSpots.forEach((treasureSpot) => {
-    fs.appendFileSync('exitFiles/finaltest1.txt', 'T-' + treasureSpot.horizontalPos + '-' + treasureSpot.verticalPos + '-' + treasureSpot.nbTreasures + '\n');
+    fs.appendFileSync('exitFile.txt', 'T-' + treasureSpot.horizontalPos + '-' + treasureSpot.verticalPos + '-' + treasureSpot.nbTreasures + '\n');
 });
 adventurers.forEach((adventurer) => {
-    fs.appendFileSync('exitFiles/finaltest1.txt', 'A-' + adventurer.name + '-' + adventurer.horizontalPos + '-' + adventurer.verticalPos + '-' + adventurer.orientation + '-' + adventurer.treasures + '\n');
+    fs.appendFileSync('exitFile.txt', 'A-' + adventurer.name + '-' + adventurer.horizontalPos + '-' + adventurer.verticalPos + '-' + adventurer.orientation + '-' + adventurer.treasures + '\n');
 })
