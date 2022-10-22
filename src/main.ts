@@ -2,7 +2,7 @@ import * as fs from "fs";
 import Mountain from "./mountain"
 import TreasureSpot from "./treasure_spot";
 import Adventurer from "./adventurer";
-import {readAdventurer, readEntryFile, readMountain, readTreasureSpot} from "./functions";
+import { readAdventurer, readEntryFile, readMountain, readTreasureSpot } from "./functions";
 
 // Variables pour stocker les dimensions de la carte
 let verticalLength = 0;
